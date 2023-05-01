@@ -2,33 +2,25 @@
 import telethon # Library to interact with Telegram's API as a user or through a bot account 
 from telethon.tl.custom import Button
 from telethon import TelegramClient, events
-
 import asyncio # Provides infrastructure for writing asynchronous code using coroutines.
 import config # Custom file containing configuration settings for the bot.
 import openai # Python module that provides an interface to the OpenAI API.
 
-
-# Configure OpenAI API key
 openai.api_key = config.openai_key
-
 # Configure Telegram client
 client = TelegramClient(config.session_name_bot, config.API_ID, config.API_HASH).start(bot_token=config.BOT_TOKEN)
 
-
 # Define button templates
 keyboard_stop = [[Button.inline("Stop and reset conversation", b"stop")]]
-
 
 # Define helper function to retrieve a message from a conversation and handle button clicks
 async def send_question_and_retrieve_result(prompt, conv, keyboard):
     """
     Sends a question to the user and retrieves their response.
-
     Args:
         prompt (str): The question to ask the user.
         conv (telethon.client.conversations.Conversation): The conversation object to use for sending the message.
         keyboard (list): The keyboard to send with the message.
-
     Returns:
         Tuple[Union[events.callbackquery.CallbackQuery.Event, str], telethon.types.Message]: A tuple containing the user's response and the message object.
     """
@@ -127,9 +119,6 @@ async def handle_start_command(event):
         print(e)
         await client.send_message(SENDER, "<b>Conversation ended✔️</b>\nSomething went wrong. Please type /start to begin a new conversation.", parse_mode='html')
         return
-
-
-## Main function
 if __name__ == "__main__":
     print("Bot Started...")    
     client.run_until_disconnected() # Start the bot!
